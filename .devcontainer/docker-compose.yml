@@ -1,0 +1,20 @@
+version: "3.8"
+
+services:
+  selenium_chrome:
+    image: selenium/standalone-chrome-debug
+    ports:
+      - 4444:4444
+      - 5900:5900
+    shm_size: "2gb"
+
+  app:
+    container_name: dvlife-collector
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ..:/workspaces:cached
+    tty: true
+    # Overrides default command so things don't shut down after the process ends.
+    command: sleep infinity
