@@ -38,3 +38,5 @@ build-backend = "poetry.core.masonry.api"
 [tool.taskipy.tasks]
 position = "python dvlife_collector/main_position.py"
 test = "poetry run pytest -v"
+flake8 = "poetry run flake8 --exclude .venv --count --statistics"
+black = "poetry run black"
