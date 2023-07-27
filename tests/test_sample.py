@@ -1,11 +1,9 @@
-import dataclasses
 from datetime import date
 from decimal import Decimal
 
 import pandas
 
 from dvlife_collector.domain.model.position import Position
-from dvlife_collector.domain.model.ticker import Ticker
 
 # import pytest
 
@@ -44,5 +42,5 @@ def test_pandas():
             "valuation_ratio": -2,
         }
     )
-    df.to_csv("/workspaces/aaa2.csv", index=False)
+    # df.to_csv("/workspaces/aaa2.csv", index=False)
     assert True
