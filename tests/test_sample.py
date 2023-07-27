@@ -1,11 +1,9 @@
-import dataclasses
 from datetime import date
 from decimal import Decimal
 
 import pandas
 
 from dvlife_collector.domain.model.position import Position
-from dvlife_collector.domain.model.ticker import Ticker
 
 # import pytest
 
