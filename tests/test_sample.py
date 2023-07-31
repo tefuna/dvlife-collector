@@ -15,6 +15,49 @@ from dvlife_collector.domain.model.position import Position
 #     yield
 
 
+def test_ref():
+    a = [1, 2, 3]
+    b = a
+
+    a.append(4)
+    print(a)
+    print(b)
+
+
+def test_strip():
+    a = "24万"
+
+    # a = a.replace()
+
+    # if a.find("万") != -1:
+    #     a = a.replace("万", "000")
+
+    print(a)
+
+
+def test_list_extend():
+    a = [1, 2, 3]
+    b = []
+    c = [4, 5, 6]
+
+    c.extend(a)
+    c.extend(b)
+
+    print(c)
+
+
+def test_isdecimal():
+    a_price = "35.11"
+    c_price = "--"
+
+    a_dec = Decimal(a_price)
+    print(a_dec)
+    try:
+        float(c_price)
+    except ValueError:
+        print("is not decimal")
+
+
 def test_pandas():
     pos1 = Position("1111", date.today(), 1, Decimal(101), Decimal(201))
     pos2 = Position("1112", date.today(), 1, Decimal(102), Decimal(202))

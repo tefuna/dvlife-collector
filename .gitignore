@@ -165,6 +165,7 @@ cython_debug/
 !.vscode/tasks.json
 #!.vscode/launch.json
 !.vscode/extensions.json
+!.vscode/cspell.json
 *.code-workspace
 !default.code-workspace
 .devcontainer/docker-compose.override.yml

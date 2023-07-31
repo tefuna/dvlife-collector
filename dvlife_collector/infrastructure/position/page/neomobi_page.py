@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 from constant.bank import Bank
 from domain.model.position_by_bank import PositionByBank
 from domain.model.ticker import Ticker
-from infrastructure.page.page_base import PageBase
+from infrastructure.position.page.page_base import PageBase
 from selenium.webdriver.common.by import By
 
 log = getLogger(__name__)
