@@ -1,15 +1,13 @@
 import os
+from pathlib import Path
 
 import pandas
 from domain.model.position import Position
 from domain.model.position_by_bank import PositionByBank
-from dotenv import load_dotenv
-from infrastructure.page.credential import Credential
-from infrastructure.page.neomobi_page import NeomobiPage
-from infrastructure.page.rakuten_page import RakutenPage
-from infrastructure.page.sbi_page import SbiPage
-
-load_dotenv()
+from infrastructure.credential import Credential
+from infrastructure.position.page.neomobi_page import NeomobiPage
+from infrastructure.position.page.rakuten_page import RakutenPage
+from infrastructure.position.page.sbi_page import SbiPage
 
 
 class PositionRepository:
@@ -42,7 +40,9 @@ class PositionRepository:
         return NeomobiPage(cred).scrape()
 
     def save(self, positions: list[Position]) -> None:
-        # TODO 事前にディレクトリ作る
-        sorted_pos = sorted(positions, key=lambda position: position.ticker)
+        out_dir = os.environ["POSITION_OUT_DIR"]
+        Path(out_dir).mkdir(parents=True, exist_ok=True)
+
+        sorted_pos = sorted(positions, key=lambda position: (position.ticker, position.base_date))
         df = pandas.DataFrame(sorted_pos)
-        df.to_csv(os.environ["POSITION_OUT_PATH"], sep="\t", index=False, header=False)
+        df.to_csv(f"{out_dir}/position_out.csv", sep="\t", index=False, header=False)

@@ -7,7 +7,7 @@ from bs4.element import ResultSet
 from constant.bank import Bank
 from domain.model.position_by_bank import PositionByBank
 from domain.model.ticker import Ticker
-from infrastructure.page.page_base import PageBase
+from infrastructure.position.page.page_base import PageBase
 from selenium.webdriver.common.by import By
 
 log = getLogger(__name__)
@@ -125,8 +125,10 @@ class SbiPage(PageBase):
             quantity = tds2[0].get_text().replace(",", "").strip()
             a_price = tds2[1].get_text().replace(",", "").strip()
             c_price = tds2[2].get_text().replace(",", "").strip()
-            # 設定がない場合は、current_priceと合わせる
-            if not str(a_price).isdecimal():
+            # 設定がない（=数値変換できない）場合は、current_priceと合わせる
+            try:
+                float(a_price)
+            except ValueError:
                 a_price = c_price
             position = PositionByBank(Ticker(ticker), Bank.SBI, int(quantity), Decimal(a_price), Decimal(c_price))
             positions.append(position)

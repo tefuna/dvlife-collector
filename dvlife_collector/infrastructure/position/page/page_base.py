@@ -1,7 +1,7 @@
 from abc import ABCMeta, abstractmethod
 
 from domain.model.position_by_bank import PositionByBank
-from infrastructure.page.credential import Credential
+from infrastructure.credential import Credential
 from selenium import webdriver
 
 

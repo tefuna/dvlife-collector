@@ -1,12 +1,11 @@
 from logging import config, getLogger
 
 import yaml
-from application.position_collect_usecase import PositionCollectUseCase
+from application.divunit_collect_usecase import DivunitCollectUseCase
 from constant.constants import LOGGING_CONFIG
 from dotenv import load_dotenv
 
 load_dotenv()
-
 
 # logging
 config.dictConfig(
@@ -19,7 +18,7 @@ log = getLogger(__name__)
 
 
 def main():
-    collect_usecase = PositionCollectUseCase()
+    collect_usecase = DivunitCollectUseCase()
     collect_usecase.renew()
 
 
