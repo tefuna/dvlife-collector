@@ -58,12 +58,21 @@ class JpNormalPage(PageBase):
         self.driver.get(src)
 
         html = self.driver.page_source.encode("utf-8")
-        soup = BeautifulSoup(html, "html.parser")
+        soup = BeautifulSoup(html, "html.parser", from_encoding='utf-8')
 
         self.driver.back()
-        return self.__get_divunit(target.ticker, soup)
+        try:
+            results = self.__get_divunit(target.ticker, soup)
+        except Exception:
+            log.error("error ticker: %s", target.ticker, exc_info=True)
+        return results
 
     def __get_divunit(self, ticker: str, soup: BeautifulSoup) -> list[Divunit]:
+        # 四季報データが存在しない場合
+        if soup.find(id="err_msg") is not None:
+            log.warn("Japan Company Handbook data not found : %s", ticker)
+            return []
+
         trs = soup.select("#id2 > div:nth-child(2) > div:nth-child(2) > table.tbl-data-02 > tbody > tr")
         divunits = []
         for tr in trs:

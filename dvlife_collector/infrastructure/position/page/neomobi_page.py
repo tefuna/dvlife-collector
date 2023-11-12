@@ -55,7 +55,12 @@ class NeomobiPage(PageBase):
             c_price = section.select_one("tr:nth-child(1) td span").get_text().replace(",", "").strip()
             quantity = section.select_one("tr:nth-child(2) td span").get_text().replace(",", "").strip()
             a_price = section.select_one("tr:nth-child(5) span").get_text().replace(",", "").strip()
-            position = PositionByBank(Ticker(ticker), Bank.NEOMOBI, int(quantity), Decimal(a_price), Decimal(c_price))
+            try:
+                c_price_dec = Decimal(c_price)
+            except Exception:
+                log.warn("Cannot parse ticker: %s", ticker)
+                c_price_dec = Decimal(0)
+            position = PositionByBank(Ticker(ticker), Bank.NEOMOBI, int(quantity), Decimal(a_price), c_price_dec)
             positions.append(position)
 
         return positions
