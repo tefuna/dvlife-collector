@@ -58,7 +58,7 @@ class JpNormalPage(PageBase):
         self.driver.get(src)
 
         html = self.driver.page_source.encode("utf-8")
-        soup = BeautifulSoup(html, "html.parser", from_encoding='utf-8')
+        soup = BeautifulSoup(html, "html.parser", from_encoding="utf-8")
 
         self.driver.back()
         try:

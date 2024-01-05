@@ -79,5 +79,8 @@ class JpEtfPage(PageBase):
             return None
         div_date = datetime.strptime(div_date_str, "%Y/%m/%d").date()
         amount = tds[1].get_text().strip()
+        if not amount.isdecimal():
+            amount = 0
+            log.warn("div amount not determined. ticker: %s, amount: %s", ticker, amount)
 
         return Divunit(ticker, div_date, Decimal(amount), paid)
