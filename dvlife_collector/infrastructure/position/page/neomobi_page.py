@@ -59,7 +59,7 @@ class NeomobiPage(PageBase):
                 c_price_dec = Decimal(c_price)
             except Exception:
                 log.warn("Cannot parse ticker: %s", ticker)
-                c_price_dec = Decimal(0)
+                continue
             position = PositionByBank(Ticker(ticker), Bank.NEOMOBI, int(quantity), Decimal(a_price), c_price_dec)
             positions.append(position)
 

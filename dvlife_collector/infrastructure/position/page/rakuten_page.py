@@ -30,7 +30,7 @@ class RakutenPage(PageBase):
 
         # 保有商品一覧へ遷移
         self.driver.find_element(
-            By.XPATH, '//*[@id="str-container"]/div[2]/main/form[2]/div[2]/div[1]/div[1]/div[2]/div[1]/a[1]'
+            By.XPATH, '//*[@id="str-container"]/div[2]/main/form[2]/div[3]/div[1]/div[1]/div[2]/div[1]/a[1]'
         ).click()
         time.sleep(5)
 

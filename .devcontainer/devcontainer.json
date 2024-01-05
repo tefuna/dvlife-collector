@@ -3,43 +3,30 @@
 	"dockerComposeFile": "docker-compose.yml",
 	"service": "app",
 	"workspaceFolder": "/workspaces",
-	// 👇 Features to add to the Dev Container. More info: https://containers.dev/implementors/features.
-	// "features": {},
-	// 👇 Use 'forwardPorts' to make a list of ports inside the container available locally.
-	// "forwardPorts": [],
-	// 👇 Use 'postCreateCommand' to run commands after the container is created.
-	// "postCreateCommand": "",
-	// 👇 Configure tool-specific properties.
 	"customizations": {
 		"vscode": {
 			"extensions": [
 				"streetsidesoftware.code-spell-checker",
 				"ms-python.python",
+				"charliermarsh.ruff",
 				"njpwerner.autodocstring",
-				"ms-python.black-formatter",
-				"ms-python.flake8",
-				"ms-python.isort",
 				"eamodio.gitlens",
 				"oderwat.indent-rainbow",
 				"mosapride.zenkaku",
 				"redhat.vscode-yaml",
-				"tamasfe.even-better-toml"
+				"tamasfe.even-better-toml",
+				"Gruntfuggly.todo-tree"
 			],
 			"settings": {
-				"python.linting.enabled": true,
-				"python.linting.flake8Enabled": true,
-				"python.linting.pylintEnabled": false,
-				"python.linting.pycodestyleEnabled": false,
 				"[python]": {
-					"editor.defaultFormatter": "ms-python.black-formatter"
+					"editor.defaultFormatter": "charliermarsh.ruff",
+					"editor.formatOnSave": false,
+					"editor.codeActionsOnSave": {
+						"source.fixAll.ruff": "never",
+						"source.organizeImports.ruff": "explicit"
+					}
 				},
-				"python.formatting.provider": "none",
-				"isort.check": true,
-				"autoDocstring.docstringFormat": "google",
-				// isort
-				"editor.codeActionsOnSave": {
-					"source.organizeImports": true
-				}
+				"autoDocstring.docstringFormat": "google"
 			}
 		}
 	}
