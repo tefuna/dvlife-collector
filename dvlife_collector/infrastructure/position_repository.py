@@ -5,7 +5,6 @@ import pandas
 from domain.model.position import Position
 from domain.model.position_by_bank import PositionByBank
 from infrastructure.credential import Credential
-from infrastructure.position.page.neomobi_page import NeomobiPage
 from infrastructure.position.page.rakuten_page import RakutenPage
 from infrastructure.position.page.sbi_page import SbiPage
 
@@ -18,7 +17,6 @@ class PositionRepository:
         positions_by_bank = []
         positions_by_bank.extend(self.__retrieve_rakuten())
         positions_by_bank.extend(self.__retrieve_sbi())
-        positions_by_bank.extend(self.__retrieve_neomobi())
         return positions_by_bank
 
     def __retrieve_rakuten(self) -> list[PositionByBank]:
@@ -32,12 +30,6 @@ class PositionRepository:
         password = os.environ["SBI_PASS"]
         cred = Credential(username, password)
         return SbiPage(cred).scrape()
-
-    def __retrieve_neomobi(self) -> list[PositionByBank]:
-        username = os.environ["NEO_USER"]
-        password = os.environ["NEO_PASS"]
-        cred = Credential(username, password)
-        return NeomobiPage(cred).scrape()
 
     def save(self, positions: list[Position]) -> None:
         out_dir = os.environ["POSITION_OUT_DIR"]
