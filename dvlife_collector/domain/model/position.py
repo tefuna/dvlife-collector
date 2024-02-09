@@ -20,7 +20,7 @@ class Position:
     valuation_value: Decimal = field(init=False)
     valuation_ratio: Decimal = field(init=False)
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         object.__setattr__(self, "position_id", f"{self.ticker}_{self.base_date:%Y%m%d}")
         # 新株予約等、取得価額が 0 のケースの対応。
         acquisition_price = self.acquisition_price

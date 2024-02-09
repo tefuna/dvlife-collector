@@ -29,9 +29,9 @@ class UsNormalPage(PageBase):
         divunits = self.__get_divunit(target.ticker, soup)
         return divunits
 
-    def __get_divunit(self, ticker, soup: BeautifulSoup) -> list[Divunit]:
+    def __get_divunit(self, ticker: str, soup: BeautifulSoup) -> list[Divunit]:
         trs = soup.select("#full-screen-payout-modal tbody > tr")
-        divunits = []
+        divunits: list[Divunit] = []
 
         # 配当行なしの場合
         if len(trs) == 1 and trs[0].get_text().find("empty") != -1:

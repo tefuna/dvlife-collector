@@ -2,7 +2,7 @@ import time
 from decimal import Decimal
 from logging import getLogger
 
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, ResultSet, Tag
 from constant.bank import Bank
 from domain.model.position_by_bank import PositionByBank
 from domain.model.ticker import Ticker
@@ -59,7 +59,7 @@ class RakutenPage(PageBase):
 
         return positions
 
-    def __get_position_jp(self, tds) -> PositionByBank:
+    def __get_position_jp(self, tds: ResultSet[Tag]) -> PositionByBank:
         ticker = tds[1].get_text().strip()
         quantity = tds[7].select_one("a").get_text().replace(",", "").replace("株", "").strip()
         a_price = tds[8].get_text().replace(",", "").replace("円", "").strip()
@@ -67,7 +67,7 @@ class RakutenPage(PageBase):
         position = PositionByBank(Ticker(ticker), Bank.RAKUTEN, int(quantity), Decimal(a_price), Decimal(c_price))
         return position
 
-    def __get_position_us(self, tds) -> PositionByBank:
+    def __get_position_us(self, tds: ResultSet[Tag]) -> PositionByBank:
         ticker = tds[1].get_text().strip()
         quantity = tds[4].get_text().replace(",", "").replace("株", "").strip()
         a_price = tds[5].get_text().replace(",", "").replace("USD", "").strip()

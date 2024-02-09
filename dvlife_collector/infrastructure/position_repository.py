@@ -10,7 +10,7 @@ from infrastructure.position.page.sbi_page import SbiPage
 
 
 class PositionRepository:
-    def __init__(self):
+    def __init__(self) -> None:
         pass
 
     def retrieve_all_by_bank(self) -> list[PositionByBank]:
@@ -23,13 +23,13 @@ class PositionRepository:
         username = os.environ["RAK_USER"]
         password = os.environ["RAK_PASS"]
         cred = Credential(username, password)
-        return RakutenPage(cred).scrape()
+        return RakutenPage(cred).scrape()  # type: ignore
 
     def __retrieve_sbi(self) -> list[PositionByBank]:
         username = os.environ["SBI_USER"]
         password = os.environ["SBI_PASS"]
         cred = Credential(username, password)
-        return SbiPage(cred).scrape()
+        return SbiPage(cred).scrape()  # type: ignore
 
     def save(self, positions: list[Position]) -> None:
         out_dir = os.environ["POSITION_OUT_DIR"]

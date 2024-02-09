@@ -11,7 +11,7 @@ log = getLogger(__name__)
 
 
 class DivunitService:
-    def __init__(self):
+    def __init__(self) -> None:
         # TODO 依存性逆転→DI
         self.__divunit_repository = DivunitRepository()
 

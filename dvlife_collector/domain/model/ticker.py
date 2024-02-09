@@ -8,5 +8,5 @@ REG = re.compile(r"aaa")
 class Ticker:
     ticker: str
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         pass
