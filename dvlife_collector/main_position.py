@@ -18,7 +18,7 @@ config.dictConfig(
 log = getLogger(__name__)
 
 
-def main():
+def main() -> None:
     collect_usecase = PositionCollectUseCase()
     collect_usecase.renew()
 

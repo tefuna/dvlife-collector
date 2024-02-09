@@ -14,7 +14,7 @@ from infrastructure.divunit.page.us_normal_page import UsNormalPage
 
 
 class DivunitRepository:
-    def __init__(self):
+    def __init__(self) -> None:
         pass
 
     def retrieve_divunit(self, targets: list[DivunitTarget]) -> list[Divunit]:

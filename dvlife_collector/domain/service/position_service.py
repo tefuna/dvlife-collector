@@ -9,7 +9,7 @@ log = getLogger(__name__)
 
 
 class PositionService:
-    def __init__(self):
+    def __init__(self) -> None:
         # TODO 依存性逆転→DI
         self.__position_repository = PositionRepository()
 
@@ -25,7 +25,7 @@ class PositionService:
 
     def __sum_by_stock(self, positions_by_bank: list[PositionByBank]) -> list[Position]:
         base_date = date.today()
-        positions_by_ticker = {}
+        positions_by_ticker: dict[str, Position] = {}
         # TODO 一旦ゴリ押しで
         for elem in positions_by_bank:
             position: Position = positions_by_ticker.get(elem.ticker)

@@ -29,7 +29,7 @@ class UsEtfPage(PageBase):
         divunits = self.__get_divunit(target.ticker, soup)
         return divunits
 
-    def __get_divunit(self, ticker, soup: BeautifulSoup) -> list[Divunit]:
+    def __get_divunit(self, ticker: str, soup: BeautifulSoup) -> list[Divunit]:
         trs = soup.select("#distributions > div > div.row > div.col-lg-4.col-md-6 > div > table > tbody > tr")
         divunits = []
         for tr in trs:

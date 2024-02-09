@@ -7,10 +7,10 @@ from domain.service.divunit_service import DivunitService
 
 
 class DivunitCollectUseCase:
-    def __init__(self):
+    def __init__(self) -> None:
         self.__divunit_service = DivunitService()
 
-    def renew(self):
+    def renew(self) -> None:
         # 対象取得
         df = pandas.read_csv(os.environ["DIVUNIT_IN_DIR"] + "/target_tickers.csv", header=None, dtype=str)
         targets = []
