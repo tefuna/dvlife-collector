@@ -51,8 +51,13 @@ class UsNormalPage(PageBase):
                             div_date = pay_date
                         else:
                             div_date = datetime.strptime(div_date_str, "%Y-%m-%d").date()
-                    case "Payout Amount":
-                        amount = Decimal(td.get_text().strip("$").strip())
+                    case "Payout Amount (USD)":
+                        div_date_str = td.get_text().strip()
+                        if div_date_str == "-":
+                            # 未指定の場合はゼロとして扱う
+                            amount = Decimal(0)
+                        else:
+                            amount = Decimal(div_date_str.strip("$"))
 
             divunit = Divunit(ticker, div_date, amount, True if pay_date < date.today() else False)
             divunits.append(divunit)

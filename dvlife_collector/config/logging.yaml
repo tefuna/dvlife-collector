@@ -9,16 +9,15 @@ formatters:
 handlers:
   console:
     class: logging.StreamHandler
-    level: DEBUG
     formatter: basic
     stream: ext://sys.stdout
 
 loggers:
   app:
-    level: DEBUG
+    level: INFO
     handlers: [console]
     propagate: no
 
 root:
-  level: DEBUG
+  level: INFO
   handlers: [console]
