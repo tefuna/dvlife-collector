@@ -59,11 +59,11 @@ class SbiPage(PageBase):
 
         trs = {}
         result_set = soup.select(
-            "body > div:nth-child(1) > table:nth-child(14) > tbody > tr > td:nth-child(1) > table > tbody > tr > td:nth-child(2) > table:nth-child(3) > tbody > tr:nth-child(1) > td:nth-child(2) > table:nth-child(7) > tbody > tr > td:nth-child(3) > table:nth-child(7) > tbody > tr"  # noqa: E501
+            "body > div:nth-child(3) > table:nth-child(14) > tbody > tr > td:nth-child(1) > table > tbody > tr > td:nth-child(2) > table:nth-child(3) > tbody > tr:nth-child(1) > td:nth-child(2) > table:nth-child(7) > tbody > tr > td:nth-child(3) > table:nth-child(7) > tbody > tr"  # noqa: E501
         )
         trs[ACC_TYPE_TK] = result_set[1:]
         result_set = soup.select(
-            "body > div:nth-child(1) > table:nth-child(14) > tbody > tr > td:nth-child(1) > table > tbody > tr > td:nth-child(2) > table:nth-child(3) > tbody > tr:nth-child(1) > td:nth-child(2) > table:nth-child(7) > tbody > tr > td:nth-child(3) > table:nth-child(10) > tbody > tr"  # noqa: E501
+            "body > div:nth-child(3) > table:nth-child(14) > tbody > tr > td:nth-child(1) > table > tbody > tr > td:nth-child(2) > table:nth-child(3) > tbody > tr:nth-child(1) > td:nth-child(2) > table:nth-child(7) > tbody > tr > td:nth-child(3) > table:nth-child(10) > tbody > tr"  # noqa: E501
         )
         trs[ACC_TYPE_IP] = result_set[1:]
         return trs
