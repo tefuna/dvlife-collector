@@ -172,3 +172,5 @@ cython_debug/
 
 # add here
 data/
+gspread_client_secret.json
+!environment/local/gspread_client_secret.json
