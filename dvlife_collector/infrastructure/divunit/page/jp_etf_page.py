@@ -14,7 +14,6 @@ from selenium.webdriver.common.keys import Keys
 log = getLogger(__name__)
 
 
-
 class JpEtfPage(PageBase):
     def _retrieve(self, targets: list[DivunitTarget]) -> list[Divunit]:
         # ログイン
