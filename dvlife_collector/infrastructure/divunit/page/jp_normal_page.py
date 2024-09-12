@@ -1,3 +1,4 @@
+import os
 import time
 from datetime import date
 from decimal import Decimal
@@ -12,16 +13,14 @@ from selenium.webdriver.common.keys import Keys
 
 log = getLogger(__name__)
 
-URL = {
-    "login": "https://www.rakuten-sec.co.jp/",
-}
+# TODO retryモジュールを使う
 RETRY_TIMES = 3
 
 
 class JpNormalPage(PageBase):
     def _retrieve(self, targets: list[DivunitTarget]) -> list[Divunit]:
         # ログイン
-        self.driver.get(URL["login"])
+        self.driver.get(os.environ["RAK_URL"])
         self.driver.find_element(By.ID, "form-login-id").send_keys(self._credential.username)
         self.driver.find_element(By.ID, "form-login-pass").send_keys(self._credential.password)
         self.driver.find_elements(By.CLASS_NAME, "s3-form-login__btn")[0].click()

@@ -1,3 +1,4 @@
+import os
 import time
 from decimal import Decimal
 from logging import getLogger
@@ -12,9 +13,6 @@ from selenium.webdriver.common.by import By
 
 log = getLogger(__name__)
 
-URL = {
-    "login": "https://www.sbisec.co.jp/ETGate",
-}
 ACC_TYPE_TK = "TOKUTEI"
 ACC_TYPE_IP = "IPPAN"
 
@@ -22,8 +20,7 @@ ACC_TYPE_IP = "IPPAN"
 class SbiPage(PageBase):
     def _move_to_target_page(self) -> None:
         # ログイン
-        self.driver.get(URL["login"])
-
+        self.driver.get(os.environ["SBI_URL"])
         self.driver.find_element(By.NAME, "user_id").send_keys(self._credential.username)
         self.driver.find_element(By.NAME, "user_password").send_keys(self._credential.password)
         self.driver.find_element(By.NAME, "ACT_login").click()

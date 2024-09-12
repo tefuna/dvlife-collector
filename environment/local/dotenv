@@ -5,6 +5,7 @@
 # common
 # =============================================================================
 # credentials
+RAK_URL=https://www.rakuten-sec.co.jp/
 RAK_USER=xxx
 RAK_PASS=xxx
 SBI_URL=https://www.sbisec.co.jp/ETGate
