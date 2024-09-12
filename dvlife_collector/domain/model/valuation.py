@@ -17,12 +17,11 @@ class Valuation:
     dividend_per_share: Decimal
     dividend_yield: Decimal
     equity_ratio: Decimal = Decimal(0)
-    actual_ROE: Decimal  = Decimal(0)
+    actual_ROE: Decimal = Decimal(0)
     forward_ROE: Decimal = Decimal(0)
     actual_ROA: Decimal = Decimal(0)
-    forward_ROA: Decimal  = Decimal(0)
-    actual_EPS: Decimal  = Decimal(0)
-
+    forward_ROA: Decimal = Decimal(0)
+    actual_EPS: Decimal = Decimal(0)
 
     def __post_init__(self) -> None:
         pass

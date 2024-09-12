@@ -11,6 +11,6 @@ class ValuationService:
         # TODO 依存性逆転→DI
         self._valuation_repository = ValuationRepository()
 
-    def update(self)-> list[Valuation]:
+    def update(self) -> list[Valuation]:
         valuations: list[Valuation] = self._valuation_repository.retrieve()
         self._valuation_repository.save(valuations)
