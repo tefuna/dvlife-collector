@@ -1,3 +1,4 @@
+import os
 import time
 from decimal import Decimal
 from logging import getLogger
@@ -11,9 +12,6 @@ from selenium.webdriver.common.by import By
 
 log = getLogger(__name__)
 
-URL = {
-    "login": "https://www.rakuten-sec.co.jp/",
-}
 KINDS = {
     "jp": "国内株式",
     "us": "米国株式",
@@ -23,7 +21,7 @@ KINDS = {
 class RakutenPage(PageBase):
     def _move_to_target_page(self) -> None:
         # ログイン
-        self.driver.get(URL["login"])
+        self.driver.get(os.environ["RAK_URL"])
         self.driver.find_element(By.ID, "form-login-id").send_keys(self._credential.username)
         self.driver.find_element(By.ID, "form-login-pass").send_keys(self._credential.password)
         self.driver.find_elements(By.CLASS_NAME, "s3-form-login__btn")[0].click()
