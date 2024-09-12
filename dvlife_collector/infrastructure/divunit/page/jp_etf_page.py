@@ -28,11 +28,11 @@ class JpEtfPage(PageBase):
         # ティッカー分
         divunits = []
         for target in targets:
-            divunits.extend(self.__parse(target))
+            divunits.extend(self._parse(target))
 
         return divunits
 
-    def __parse(self, target: DivunitTarget) -> list[Divunit]:
+    def _parse(self, target: DivunitTarget) -> list[Divunit]:
         self.driver.find_element(By.ID, "search-stock-01").send_keys(target.ticker)
         self.driver.find_element(By.ID, "search-stock-01").send_keys(Keys.ENTER)
 
@@ -50,28 +50,28 @@ class JpEtfPage(PageBase):
         html = self.driver.page_source.encode("utf-8")
         soup = BeautifulSoup(html, "html.parser")
 
-        return self.__get_divunit(target.ticker, soup)
+        return self._get_divunit(target.ticker, soup)
 
-    def __get_divunit(self, ticker: str, soup: BeautifulSoup) -> list[Divunit]:
+    def _get_divunit(self, ticker: str, soup: BeautifulSoup) -> list[Divunit]:
         divunits = {}
 
         # 予想配当情報
         trs = soup.select("#dividend-main > div:nth-child(2) > div:nth-child(2) > table:nth-child(2) > tbody > tr")
         for tr in trs:
-            divunit = self.__get_div_row(tr, ticker, False)
+            divunit = self._get_div_row(tr, ticker, False)
             if divunit is not None:
                 divunits[divunit.divunit_id] = divunit
 
         # 確定配当情報
         trs = soup.select("#dividend-main > div:nth-child(2) > div:nth-child(2) > table:nth-child(4) > tbody > tr")
         for tr in trs:
-            divunit = self.__get_div_row(tr, ticker, True)
+            divunit = self._get_div_row(tr, ticker, True)
             if divunit is not None:
                 divunits[divunit.divunit_id] = divunit
 
         return list(divunits.values())
 
-    def __get_div_row(self, tr: Tag, ticker: str, paid: bool) -> Divunit | None:
+    def _get_div_row(self, tr: Tag, ticker: str, paid: bool) -> Divunit | None:
         tds = tr.select("td")
         div_date_str = tds[0].get_text().strip()
         if div_date_str == "-":
@@ -81,6 +81,6 @@ class JpEtfPage(PageBase):
         amount = tds[1].get_text().strip()
         if not amount.isdecimal():
             amount = 0
-            log.warn("div amount not determined. ticker: %s, amount: %s", ticker, amount)
+            log.warning("div amount not determined. ticker: %s, amount: %s", ticker, amount)
 
         return Divunit(ticker, div_date, Decimal(amount), paid)

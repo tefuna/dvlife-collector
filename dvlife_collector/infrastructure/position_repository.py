@@ -15,17 +15,17 @@ class PositionRepository:
 
     def retrieve_all_by_bank(self) -> list[PositionByBank]:
         positions_by_bank = []
-        positions_by_bank.extend(self.__retrieve_rakuten())
-        positions_by_bank.extend(self.__retrieve_sbi())
+        positions_by_bank.extend(self._retrieve_rakuten())
+        positions_by_bank.extend(self._retrieve_sbi())
         return positions_by_bank
 
-    def __retrieve_rakuten(self) -> list[PositionByBank]:
+    def _retrieve_rakuten(self) -> list[PositionByBank]:
         username = os.environ["RAK_USER"]
         password = os.environ["RAK_PASS"]
         cred = Credential(username, password)
         return RakutenPage(cred).scrape()  # type: ignore
 
-    def __retrieve_sbi(self) -> list[PositionByBank]:
+    def _retrieve_sbi(self) -> list[PositionByBank]:
         username = os.environ["SBI_USER"]
         password = os.environ["SBI_PASS"]
         cred = Credential(username, password)

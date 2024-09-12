@@ -14,11 +14,11 @@ class UsNormalPage(PageBase):
         divunits = []
 
         for target in targets:
-            divunits.extend(self.__parse(target))
+            divunits.extend(self._parse(target))
 
         return divunits
 
-    def __parse(self, target: DivunitTarget) -> list[Divunit]:
+    def _parse(self, target: DivunitTarget) -> list[Divunit]:
         self.driver.get(target.url)
         self.driver.find_element(By.CLASS_NAME, "full-screen-payout-history").click()
         time.sleep(3)
@@ -26,10 +26,10 @@ class UsNormalPage(PageBase):
         html = self.driver.page_source.encode("utf-8")
         soup = BeautifulSoup(html, "html.parser")
 
-        divunits = self.__get_divunit(target.ticker, soup)
+        divunits = self._get_divunit(target.ticker, soup)
         return divunits
 
-    def __get_divunit(self, ticker: str, soup: BeautifulSoup) -> list[Divunit]:
+    def _get_divunit(self, ticker: str, soup: BeautifulSoup) -> list[Divunit]:
         trs = soup.select("#full-screen-payout-modal tbody > tr")
         divunits: list[Divunit] = []
 

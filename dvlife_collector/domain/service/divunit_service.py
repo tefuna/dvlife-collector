@@ -13,20 +13,20 @@ log = getLogger(__name__)
 class DivunitService:
     def __init__(self) -> None:
         # TODO 依存性逆転→DI
-        self.__divunit_repository = DivunitRepository()
+        self._divunit_repository = DivunitRepository()
 
     def collect(self, targets: list[DivunitTarget]) -> None:
         # 配当履歴取得
-        divunits = self.__divunit_repository.retrieve_divunit(targets)
+        divunits = self._divunit_repository.retrieve_divunit(targets)
 
         # 保存
-        self.__divunit_repository.save(divunits)
+        self._divunit_repository.save(divunits)
 
         # 銘柄ごとの年間配当を算出
-        annual_divs = self.__calc_annual_dividens(divunits)
-        self.__divunit_repository.save_annual(annual_divs)
+        annual_divs = self._calc_annual_dividens(divunits)
+        self._divunit_repository.save_annual(annual_divs)
 
-    def __calc_annual_dividens(self, divunits: list[Divunit]) -> list[AnnualDividend]:
+    def _calc_annual_dividens(self, divunits: list[Divunit]) -> list[AnnualDividend]:
         sorted_divunits = sorted(divunits, key=lambda x: x.divunit_id, reverse=True)
 
         # tickerごとに集計

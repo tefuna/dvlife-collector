@@ -39,27 +39,27 @@ class RakutenPage(PageBase):
         soup = BeautifulSoup(html, "html.parser")
 
         # trタグのリスト
-        self.__target_tags = soup.select("#table_possess_data > span > table > tbody > tr")
+        self._target_tags = soup.select("#table_possess_data > span > table > tbody > tr")
 
     def _parse(self) -> list[PositionByBank]:
         positions = []
 
-        for i, tr in enumerate(self.__target_tags):
+        for i, tr in enumerate(self._target_tags):
             tds = tr.select("td")
             kind = tds[0].get_text().strip()
 
             # TODO 分岐をやめる。interfaceに
             if kind == KINDS["jp"]:
-                positions.append(self.__get_position_jp(tds))
+                positions.append(self._get_position_jp(tds))
             elif kind == KINDS["us"]:
-                positions.append(self.__get_position_us(tds))
+                positions.append(self._get_position_us(tds))
             else:
                 log.info("unsupported kind: idx=%d, value=%s", i, kind)
                 continue
 
         return positions
 
-    def __get_position_jp(self, tds: ResultSet[Tag]) -> PositionByBank:
+    def _get_position_jp(self, tds: ResultSet[Tag]) -> PositionByBank:
         ticker = tds[1].get_text().strip()
         quantity = tds[7].select_one("a").get_text().replace(",", "").replace("株", "").strip()
         a_price = tds[8].get_text().replace(",", "").replace("円", "").strip()
@@ -67,7 +67,7 @@ class RakutenPage(PageBase):
         position = PositionByBank(Ticker(ticker), Bank.RAKUTEN, int(quantity), Decimal(a_price), Decimal(c_price))
         return position
 
-    def __get_position_us(self, tds: ResultSet[Tag]) -> PositionByBank:
+    def _get_position_us(self, tds: ResultSet[Tag]) -> PositionByBank:
         ticker = tds[1].get_text().strip()
         quantity = tds[4].get_text().replace(",", "").replace("株", "").strip()
         a_price = tds[5].get_text().replace(",", "").replace("USD", "").strip()

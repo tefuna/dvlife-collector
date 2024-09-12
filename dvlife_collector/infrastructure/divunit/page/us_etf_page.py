@@ -14,11 +14,11 @@ class UsEtfPage(PageBase):
     def _retrieve(self, targets: list[DivunitTarget]) -> list[Divunit]:
         divunits = []
         for target in targets:
-            divunits.extend(self.__parse(target))
+            divunits.extend(self._parse(target))
 
         return divunits
 
-    def __parse(self, target: DivunitTarget) -> list[Divunit]:
+    def _parse(self, target: DivunitTarget) -> list[Divunit]:
         self.driver.get(target.url)
         self.driver.find_element(By.XPATH, '//*[@id="distributions"]/div/div[2]/div[2]/div/a').click()
         time.sleep(3)
@@ -26,10 +26,10 @@ class UsEtfPage(PageBase):
         html = self.driver.page_source.encode("utf-8")
         soup = BeautifulSoup(html, "html.parser")
 
-        divunits = self.__get_divunit(target.ticker, soup)
+        divunits = self._get_divunit(target.ticker, soup)
         return divunits
 
-    def __get_divunit(self, ticker: str, soup: BeautifulSoup) -> list[Divunit]:
+    def _get_divunit(self, ticker: str, soup: BeautifulSoup) -> list[Divunit]:
         trs = soup.select("#distributions > div > div.row > div.col-lg-4.col-md-6 > div > table > tbody > tr")
         divunits = []
         for tr in trs:
@@ -43,11 +43,9 @@ class UsEtfPage(PageBase):
             divunit = Divunit(ticker, div_date, Decimal(amount), True if div_date < date.today() else False)
             divunits.append(divunit)
 
-        # 集計方法を変更したので、未来分は不要
-        # divunits.extend(self.__get_future_divs(divunits))
         return divunits
 
-    def __get_future_divs(self, divunits: list[Divunit]) -> list[Divunit]:
+    def _get_future_divs(self, divunits: list[Divunit]) -> list[Divunit]:
         # TODO Quarterlyのみ対応
         # last_year_divunits = list(
         #     filter(lambda divunit: divunit.div_date > date.today() - relativedelta(years=1), divunits)

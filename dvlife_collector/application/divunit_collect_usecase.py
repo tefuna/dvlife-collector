@@ -8,7 +8,7 @@ from domain.service.divunit_service import DivunitService
 
 class DivunitCollectUseCase:
     def __init__(self) -> None:
-        self.__divunit_service = DivunitService()
+        self._divunit_service = DivunitService()
 
     def renew(self) -> None:
         # 対象取得
@@ -20,4 +20,4 @@ class DivunitCollectUseCase:
         sorted_targets = sorted(targets, key=lambda t: t.ticker)
 
         # メイン
-        self.__divunit_service.collect(sorted_targets)
+        self._divunit_service.collect(sorted_targets)
