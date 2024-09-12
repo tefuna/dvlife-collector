@@ -8,13 +8,20 @@
         "divunits",
         "dotenv",
         "dvlife",
+        "gspread",
+        "hbook",
         "iframe",
+        "lxml",
         "mypy",
+        "rakuten",
         "relativedelta",
         "snok",
+        "srch",
         "usecase",
+        "VALU",
         "venv",
         "virtualenvs",
+        "Webload",
         "yearmonth"
     ]
 }

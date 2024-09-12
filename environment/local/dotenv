@@ -7,6 +7,7 @@
 # credentials
 RAK_USER=xxx
 RAK_PASS=xxx
+SBI_URL=https://www.sbisec.co.jp/ETGate
 SBI_USER=xxx
 SBI_PASS=xxx
 
@@ -22,3 +23,12 @@ POSITION_OUT_DIR=/workspaces/data/position/out
 DIVUNIT_IN_DIR=/workspaces/data/divunit/in
 DIVUNIT_OUT_DIR=/workspaces/data/divunit/out
 
+# =============================================================================
+# valuation
+# =============================================================================
+# valuation
+VALU_GS_AUTH=/workspaces/gspread_client_secret.json
+VALU_GS_URL=https://docs.google.com/spreadsheets/d/1v5RfVBFyBDAEvpTr1Po7NcVMKuaJ0nQRemxYVnRjpPE/edit?gid=563532298#gid=563532298
+VALU_GS_SHEET=投資候補
+VALU_GS_CELL_TARGET=A:E
+VALU_GS_COL_UPDATES=AG
