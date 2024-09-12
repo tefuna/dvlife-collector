@@ -31,7 +31,7 @@ class ValuationGs:
             log.info("write spreadsheet. ticker: %s", elem.valuation_in.ticker)
             updates.clear()
             updates.append(elem.to_list4gs_all() if elem.valuation_in.scope == "all" else elem.to_list4gs_price())
-            self._retry_write_row_to_worksheet(updates,elem.valuation_in.row_number )
+            self._retry_write_row_to_worksheet(updates, elem.valuation_in.row_number)
 
     @retry(exceptions=APIError, tries=2, delay=60)
     def _retry_write_row_to_worksheet(self, updates: list[list[str]], row_number: int) -> None:

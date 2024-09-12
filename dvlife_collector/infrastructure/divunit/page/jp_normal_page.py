@@ -29,11 +29,11 @@ class JpNormalPage(PageBase):
         # ティッカー分
         divunits = []
         for target in targets:
-            divunits.extend(self.__parse(target))
+            divunits.extend(self._parse(target))
 
         return divunits
 
-    def __parse(self, target: DivunitTarget) -> list[Divunit]:
+    def _parse(self, target: DivunitTarget) -> list[Divunit]:
         self.driver.find_element(By.ID, "search-stock-01").send_keys(target.ticker)
         self.driver.find_element(By.ID, "search-stock-01").send_keys(Keys.ENTER)
 
@@ -62,12 +62,12 @@ class JpNormalPage(PageBase):
 
         self.driver.back()
         try:
-            results = self.__get_divunit(target.ticker, soup)
+            results = self._get_divunit(target.ticker, soup)
         except Exception:
             log.error("error ticker: %s", target.ticker, exc_info=True)
         return results
 
-    def __get_divunit(self, ticker: str, soup: BeautifulSoup) -> list[Divunit]:
+    def _get_divunit(self, ticker: str, soup: BeautifulSoup) -> list[Divunit]:
         # 四季報データが存在しない場合
         if soup.find(id="err_msg") is not None:
             log.warn("Japan Company Handbook data not found : %s", ticker)

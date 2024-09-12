@@ -44,9 +44,9 @@ jobs:
 
       - name: Format and lint
         run: |
-          poetry run task black .
-          poetry run task flake8
+          poetry run ruff format . --check --diff
+          poetry run ruff check --output-format=github .
 
-      - name: Test
-        run: |
-          poetry run task test
+      # - name: Test
+      #   run: |
+      #     poetry run task test

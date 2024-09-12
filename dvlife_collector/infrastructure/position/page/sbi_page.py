@@ -29,12 +29,12 @@ class SbiPage(PageBase):
         self.driver.find_element(By.NAME, "ACT_login").click()
 
         # 口座（円建）
-        self.__target_tags_ja = self.__move_to_ja_account()
+        self._target_tags_ja = self._move_to_ja_account()
 
         # 口座（外貨建）
-        self.__target_tags_us = self.__move_to_us_account()
+        self._target_tags_us = self._move_to_us_account()
 
-    def __move_to_ja_account(self) -> dict[str, ResultSet]:
+    def _move_to_ja_account(self) -> dict[str, ResultSet]:
         self.driver.find_element(By.XPATH, '//*[@id="link02M"]/ul/li[3]/a').click()
         time.sleep(1)
 
@@ -49,7 +49,7 @@ class SbiPage(PageBase):
         trs[ACC_TYPE_TK] = result_set[2:]
         return trs
 
-    def __move_to_us_account(self) -> dict[str, ResultSet]:
+    def _move_to_us_account(self) -> dict[str, ResultSet]:
         self.driver.find_element(By.XPATH, '//*[@id="navi02P"]/ul/li[2]/div/a').click()
         time.sleep(1)
 
@@ -70,15 +70,15 @@ class SbiPage(PageBase):
 
     def _parse(self) -> list[PositionByBank]:
         positions = []
-        positions.extend(self.__get_positions_jp())
-        positions.extend(self.__get_positions_us())
+        positions.extend(self._get_positions_jp())
+        positions.extend(self._get_positions_us())
         return positions
 
-    def __get_positions_jp(self) -> list[PositionByBank]:
+    def _get_positions_jp(self) -> list[PositionByBank]:
         positions = []
 
         # 特定口座
-        trs = self.__target_tags_ja[ACC_TYPE_TK]
+        trs = self._target_tags_ja[ACC_TYPE_TK]
         index = 0
         while index < len(trs):
             tds1 = trs[index].select("td")
@@ -95,11 +95,11 @@ class SbiPage(PageBase):
 
         return positions
 
-    def __get_positions_us(self) -> list[PositionByBank]:
+    def _get_positions_us(self) -> list[PositionByBank]:
         positions = []
 
         # 特定口座分
-        trs = self.__target_tags_us[ACC_TYPE_TK]
+        trs = self._target_tags_us[ACC_TYPE_TK]
         index = 0
         while index < len(trs):
             tds1 = trs[index].select("td")
@@ -115,7 +115,7 @@ class SbiPage(PageBase):
             index += 2
 
         # 一般口座
-        trs = self.__target_tags_us[ACC_TYPE_IP]
+        trs = self._target_tags_us[ACC_TYPE_IP]
         index = 0
         while index < len(trs):
             tds1 = trs[index].select("td")

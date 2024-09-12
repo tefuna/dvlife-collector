@@ -11,19 +11,19 @@ log = getLogger(__name__)
 class PositionService:
     def __init__(self) -> None:
         # TODO 依存性逆転→DI
-        self.__position_repository = PositionRepository()
+        self._position_repository = PositionRepository()
 
     def renew(self) -> None:
         # 最新のポジションをスクレイピング
-        positions_by_bank: list[PositionByBank] = self.__position_repository.retrieve_all_by_bank()
+        positions_by_bank: list[PositionByBank] = self._position_repository.retrieve_all_by_bank()
 
         # 銘柄ごとの集約
-        positions: list[Position] = self.__sum_by_stock(positions_by_bank)
+        positions: list[Position] = self._sum_by_stock(positions_by_bank)
 
         # 保存
-        self.__position_repository.save(positions)
+        self._position_repository.save(positions)
 
-    def __sum_by_stock(self, positions_by_bank: list[PositionByBank]) -> list[Position]:
+    def _sum_by_stock(self, positions_by_bank: list[PositionByBank]) -> list[Position]:
         base_date = date.today()
         positions_by_ticker: dict[str, Position] = {}
         # TODO 一旦ゴリ押しで

@@ -19,7 +19,7 @@ class DivunitRepository:
 
     def retrieve_divunit(self, targets: list[DivunitTarget]) -> list[Divunit]:
         # SiteKindごとに区分け
-        targets_by_site = self.__split_by_site(targets)
+        targets_by_site = self._split_by_site(targets)
         divunits = []
 
         # JP_NORMAL
@@ -41,7 +41,7 @@ class DivunitRepository:
 
         return divunits
 
-    def __split_by_site(self, targets: list[DivunitTarget]) -> dict[SiteKind, list[DivunitTarget]]:
+    def _split_by_site(self, targets: list[DivunitTarget]) -> dict[SiteKind, list[DivunitTarget]]:
         targets_by_site = {}
         for kind in SiteKind:
             targets_by_site[kind] = list(filter(lambda target: target.site_kind == kind, targets))
