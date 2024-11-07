@@ -32,6 +32,7 @@ class SbiPage(PageBase):
         self._target_tags_us = self._move_to_us_account()
 
     def _move_to_ja_account(self) -> dict[str, ResultSet]:
+        # ヘッダー > 口座管理
         self.driver.find_element(By.XPATH, '//*[@id="link02M"]/ul/li[3]/a').click()
         time.sleep(1)
 
@@ -47,6 +48,9 @@ class SbiPage(PageBase):
         return trs
 
     def _move_to_us_account(self) -> dict[str, ResultSet]:
+        # ヘッダー > 口座管理
+        self.driver.find_element(By.XPATH, '//*[@id="link02M"]/ul/li[3]/a').click()
+        time.sleep(1)
         self.driver.find_element(By.XPATH, '//*[@id="navi02P"]/ul/li[2]/div/a').click()
         time.sleep(1)
 
@@ -54,16 +58,15 @@ class SbiPage(PageBase):
         html = self.driver.page_source.encode("utf-8")
         soup = BeautifulSoup(html, "html.parser")
 
-        trs = {}
-        result_set = soup.select(
-            "body > div:nth-child(3) > table:nth-child(14) > tbody > tr > td:nth-child(1) > table > tbody > tr > td:nth-child(2) > table:nth-child(3) > tbody > tr:nth-child(1) > td:nth-child(2) > table:nth-child(7) > tbody > tr > td:nth-child(3) > table:nth-child(7) > tbody > tr"  # noqa: E501
-        )
-        trs[ACC_TYPE_TK] = result_set[1:]
-        result_set = soup.select(
-            "body > div:nth-child(3) > table:nth-child(14) > tbody > tr > td:nth-child(1) > table > tbody > tr > td:nth-child(2) > table:nth-child(3) > tbody > tr:nth-child(1) > td:nth-child(2) > table:nth-child(7) > tbody > tr > td:nth-child(3) > table:nth-child(10) > tbody > tr"  # noqa: E501
-        )
-        trs[ACC_TYPE_IP] = result_set[1:]
-        return trs
+        lis = {}
+        # 米国株式(現物/特定預り)
+        result_set = soup.select('#account-tab-layout > div > div.flex > div.flex-right.css-1pw5qi4 > ul:nth-child(6) > li')
+        lis[ACC_TYPE_TK] = result_set[2:]
+
+        # 米国株式(現物/一般預り)
+        result_set = soup.select('#account-tab-layout > div > div.flex > div.flex-right.css-1pw5qi4 > ul:nth-child(8) > li')
+        lis[ACC_TYPE_IP] = result_set[2:]
+        return lis
 
     def _parse(self) -> list[PositionByBank]:
         positions = []
@@ -96,40 +99,36 @@ class SbiPage(PageBase):
         positions = []
 
         # 特定口座分
-        trs = self._target_tags_us[ACC_TYPE_TK]
+        lis = self._target_tags_us[ACC_TYPE_TK]
         index = 0
-        while index < len(trs):
-            tds1 = trs[index].select("td")
-            tds2 = trs[index + 1].select("td")
+        while index < len(lis):
+            ticker = lis[index].select("div.css-kat7it")[0].next_element.strip()
+            quantity = lis[index].select("label.css-sfy3gr")[0].get_text().strip()
+            a_price = lis[index].select("div.css-sfy3gr")[0].get_text().strip()
+            c_price = lis[index].select("div.css-sfy3gr")[1].get_text().strip()
 
-            ticker = list(tds1[0].stripped_strings)[0]
-            quantity = tds2[0].get_text().replace(",", "").strip()
-            a_price = tds2[1].get_text().replace(",", "").strip()
-            c_price = tds2[2].get_text().replace(",", "").strip()
             position = PositionByBank(Ticker(ticker), Bank.SBI, int(quantity), Decimal(a_price), Decimal(c_price))
             positions.append(position)
 
-            index += 2
+            index += 1
 
-        # 一般口座
-        trs = self._target_tags_us[ACC_TYPE_IP]
+        # 一般口座分
+        lis = self._target_tags_us[ACC_TYPE_IP]
         index = 0
-        while index < len(trs):
-            tds1 = trs[index].select("td")
-            tds2 = trs[index + 1].select("td")
+        while index < len(lis):
+            ticker = lis[index].select("div.css-kat7it")[0].next_element.strip()
+            quantity = lis[index].select("label.css-sfy3gr")[0].get_text().strip()
+            a_price = lis[index].select("div.css-sfy3gr")[0].get_text().strip()
+            c_price = lis[index].select("div.css-sfy3gr")[1].get_text().strip()
 
-            ticker = list(tds1[0].stripped_strings)[0]
-            quantity = tds2[0].get_text().replace(",", "").strip()
-            a_price = tds2[1].get_text().replace(",", "").strip()
-            c_price = tds2[2].get_text().replace(",", "").strip()
-            # 設定がない（=数値変換できない）場合は、current_priceと合わせる
             try:
+                # 設定がない（=数値変換できない）場合は、current_priceと合わせる
                 float(a_price)
             except ValueError:
                 a_price = c_price
             position = PositionByBank(Ticker(ticker), Bank.SBI, int(quantity), Decimal(a_price), Decimal(c_price))
             positions.append(position)
 
-            index += 2
+            index += 1
 
         return positions
