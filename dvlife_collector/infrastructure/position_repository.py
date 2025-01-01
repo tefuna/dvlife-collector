@@ -5,6 +5,7 @@ import pandas
 from domain.model.position import Position
 from domain.model.position_by_bank import PositionByBank
 from infrastructure.credential import Credential
+from infrastructure.position.file.file_base import FileBase
 from infrastructure.position.page.rakuten_page import RakutenPage
 from infrastructure.position.page.sbi_page import SbiPage
 
@@ -17,6 +18,7 @@ class PositionRepository:
         positions_by_bank = []
         positions_by_bank.extend(self._retrieve_rakuten())
         positions_by_bank.extend(self._retrieve_sbi())
+        positions_by_bank.extend(self._retrieve_others_from_file())
         return positions_by_bank
 
     def _retrieve_rakuten(self) -> list[PositionByBank]:
@@ -30,6 +32,9 @@ class PositionRepository:
         password = os.environ["SBI_PASS"]
         cred = Credential(username, password)
         return SbiPage(cred).scrape()  # type: ignore
+
+    def _retrieve_others_from_file(self) -> list[PositionByBank]:
+        return FileBase().retrieve_from_file()
 
     def save(self, positions: list[Position]) -> None:
         out_dir = os.environ["POSITION_OUT_DIR"]

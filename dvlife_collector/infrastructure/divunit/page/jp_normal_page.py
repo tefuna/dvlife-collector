@@ -33,6 +33,7 @@ class JpNormalPage(PageBase):
         return divunits
 
     def _parse(self, target: DivunitTarget) -> list[Divunit]:
+        log.debug("parse target: %s", target.ticker)
         self.driver.find_element(By.ID, "search-stock-01").send_keys(target.ticker)
         self.driver.find_element(By.ID, "search-stock-01").send_keys(Keys.ENTER)
 
@@ -58,8 +59,8 @@ class JpNormalPage(PageBase):
 
         html = self.driver.page_source.encode("utf-8")
         soup = BeautifulSoup(html, "html.parser", from_encoding="utf-8")
-
         self.driver.back()
+
         try:
             results = self._get_divunit(target.ticker, soup)
         except Exception:
@@ -69,7 +70,7 @@ class JpNormalPage(PageBase):
     def _get_divunit(self, ticker: str, soup: BeautifulSoup) -> list[Divunit]:
         # 四季報データが存在しない場合
         if soup.find(id="err_msg") is not None:
-            log.warn("Japan Company Handbook data not found : %s", ticker)
+            log.warning("Japan Company Handbook data not found : %s", ticker)
             return []
 
         trs = soup.select("#id2 > div:nth-child(2) > div:nth-child(2) > table.tbl-data-02 > tbody > tr")
