@@ -11,6 +11,7 @@ class Valuation:
     last_updated: datetime
     current_price: Decimal
     price_changed_rate_the_day_before: Decimal
+    price_YTD_low: Decimal
     forward_EPS: Decimal
     forward_PER: Decimal
     actual_PBR: Decimal
@@ -31,6 +32,7 @@ class Valuation:
             str(self.last_updated),
             str(self.current_price),
             str(self.price_changed_rate_the_day_before),
+            str(self.price_YTD_low),
             str(self.forward_EPS),
             str(self.forward_PER),
             str(self.actual_PBR),
@@ -49,6 +51,7 @@ class Valuation:
             str(self.last_updated),
             str(self.current_price),
             str(self.price_changed_rate_the_day_before),
+            str(self.price_YTD_low),
             str(self.forward_EPS),
             str(self.forward_PER),
             str(self.actual_PBR),
