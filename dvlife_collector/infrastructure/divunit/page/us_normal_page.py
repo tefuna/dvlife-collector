@@ -1,12 +1,15 @@
 import time
 from datetime import date, datetime
 from decimal import Decimal
+from logging import getLogger
 
 from bs4 import BeautifulSoup
 from domain.model.divunit import Divunit
 from domain.model.divunit_target import DivunitTarget
 from infrastructure.divunit.page.page_base import PageBase
 from selenium.webdriver.common.by import By
+
+log = getLogger(__name__)
 
 
 class UsNormalPage(PageBase):
@@ -19,6 +22,7 @@ class UsNormalPage(PageBase):
         return divunits
 
     def _parse(self, target: DivunitTarget) -> list[Divunit]:
+        log.debug("parse target: %s", target.ticker)
         self.driver.get(target.url)
         self.driver.find_element(By.CLASS_NAME, "full-screen-payout-history").click()
         time.sleep(3)

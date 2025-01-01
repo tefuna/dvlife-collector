@@ -1,6 +1,7 @@
 import time
 from datetime import date, datetime
 from decimal import Decimal
+from logging import getLogger
 
 from bs4 import BeautifulSoup
 from dateutil.relativedelta import relativedelta
@@ -8,6 +9,8 @@ from domain.model.divunit import Divunit
 from domain.model.divunit_target import DivunitTarget
 from infrastructure.divunit.page.page_base import PageBase
 from selenium.webdriver.common.by import By
+
+log = getLogger(__name__)
 
 
 class UsEtfPage(PageBase):
@@ -19,6 +22,7 @@ class UsEtfPage(PageBase):
         return divunits
 
     def _parse(self, target: DivunitTarget) -> list[Divunit]:
+        log.debug("parse target: %s", target.ticker)
         self.driver.get(target.url)
         self.driver.find_element(By.XPATH, '//*[@id="distributions"]/div/div[2]/div[2]/div/a').click()
         time.sleep(3)

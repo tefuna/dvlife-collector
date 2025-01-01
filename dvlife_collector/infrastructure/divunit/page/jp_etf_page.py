@@ -1,4 +1,5 @@
 import os
+import time
 from datetime import datetime
 from decimal import Decimal
 from logging import getLogger
@@ -26,10 +27,13 @@ class JpEtfPage(PageBase):
         divunits = []
         for target in targets:
             divunits.extend(self._parse(target))
+            # おまじない
+            time.sleep(5)
 
         return divunits
 
     def _parse(self, target: DivunitTarget) -> list[Divunit]:
+        log.debug("parse target: %s", target.ticker)
         self.driver.find_element(By.ID, "search-stock-01").send_keys(target.ticker)
         self.driver.find_element(By.ID, "search-stock-01").send_keys(Keys.ENTER)
 
@@ -45,9 +49,14 @@ class JpEtfPage(PageBase):
         self.driver.get(src)
 
         html = self.driver.page_source.encode("utf-8")
-        soup = BeautifulSoup(html, "html.parser")
+        soup = BeautifulSoup(html, "html.parser", from_encoding="utf-8")
+        self.driver.back()
 
-        return self._get_divunit(target.ticker, soup)
+        try:
+            results = self._get_divunit(target.ticker, soup)
+        except Exception:
+            log.error("error ticker: %s", target.ticker, exc_info=True)
+        return results
 
     def _get_divunit(self, ticker: str, soup: BeautifulSoup) -> list[Divunit]:
         divunits = {}
