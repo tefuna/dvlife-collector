@@ -12,6 +12,7 @@ from selenium.webdriver.common.by import By
 
 log = getLogger(__name__)
 
+
 class UsEtfPage(PageBase):
     def _retrieve(self, targets: list[DivunitTarget]) -> list[Divunit]:
         divunits = []

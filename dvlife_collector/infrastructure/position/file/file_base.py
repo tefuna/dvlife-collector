@@ -10,7 +10,7 @@ from domain.model.ticker import Ticker
 log = getLogger(__name__)
 
 
-class FileBase():
+class FileBase:
     def retrieve_from_file(self) -> list[PositionByBank]:
         positions = []
 

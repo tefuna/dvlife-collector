@@ -60,11 +60,15 @@ class SbiPage(PageBase):
 
         lis = {}
         # 米国株式(現物/特定預り)
-        result_set = soup.select('#account-tab-layout > div > div.flex > div.flex-right.css-1pw5qi4 > ul:nth-child(6) > li')
+        result_set = soup.select(
+            "#account-tab-layout > div > div.flex > div.flex-right.css-1pw5qi4 > ul:nth-child(6) > li"
+        )
         lis[ACC_TYPE_TK] = result_set[2:]
 
         # 米国株式(現物/一般預り)
-        result_set = soup.select('#account-tab-layout > div > div.flex > div.flex-right.css-1pw5qi4 > ul:nth-child(8) > li')
+        result_set = soup.select(
+            "#account-tab-layout > div > div.flex > div.flex-right.css-1pw5qi4 > ul:nth-child(8) > li"
+        )
         lis[ACC_TYPE_IP] = result_set[2:]
         return lis
 
