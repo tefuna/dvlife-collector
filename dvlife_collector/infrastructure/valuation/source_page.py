@@ -78,8 +78,12 @@ class SourcePage:
         # 前日比%
         price_changed_rate_the_day_before = lxml_price.xpath('//*[@id="MTB0_1"]/p/span[2]')[0].text
         price_changed_rate_the_day_before = price_changed_rate_the_day_before.replace("％", "")
+        # 年初来安値
+        price_YTD_low = lxml_price.xpath('//*[@id="clmMainArea"]/div[6]/table/tbody/tr[1]/td[2]/p/span[1]')[0].text
+        price_YTD_low = price_YTD_low.replace(",", "")
         # 予EPS
         forward_EPS = lxml_price.xpath('//*[@id="posElem_190"]/table/tbody/tr[1]/td[2]/p')[0].text
+        forward_EPS = forward_EPS.replace(",", "")
         # 予PER
         forward_PER = lxml_price.xpath('//*[@id="MTB0_79"]/p/span[1]')[0].text
         forward_PER = forward_PER.replace("倍", "")
@@ -100,6 +104,7 @@ class SourcePage:
             datetime.now(),
             Decimal(current_price),
             Decimal(price_changed_rate_the_day_before) / 100,
+            Decimal(price_YTD_low),
             Decimal(forward_EPS),
             Decimal(forward_PER),
             Decimal(actual_PBR),
@@ -147,7 +152,7 @@ class SourcePage:
         actual_EPS = lxml_hbook.xpath('//*[@id="main"]/div[8]/table[3]/tbody/tr/td[1]/table[1]/tbody/tr[14]/td[2]')[
             0
         ].text
-        actual_EPS = actual_EPS.replace("円", "").strip()
+        actual_EPS = actual_EPS.replace(",", "").replace("円", "").strip()
         actual_EPS = "0" if actual_EPS == "―" else actual_EPS
 
         return Valuation(
@@ -155,6 +160,7 @@ class SourcePage:
             valuation_price.last_updated,
             valuation_price.current_price,
             valuation_price.price_changed_rate_the_day_before,
+            valuation_price.price_YTD_low,
             valuation_price.forward_EPS,
             valuation_price.forward_PER,
             valuation_price.actual_PBR,
