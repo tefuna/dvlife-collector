@@ -15,10 +15,8 @@ log = getLogger(__name__)
 class UsNormalPage(PageBase):
     def _retrieve(self, targets: list[DivunitTarget]) -> list[Divunit]:
         divunits = []
-
         for target in targets:
             divunits.extend(self._parse(target))
-
         return divunits
 
     def _parse(self, target: DivunitTarget) -> list[Divunit]:

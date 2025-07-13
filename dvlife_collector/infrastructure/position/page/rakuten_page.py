@@ -20,7 +20,7 @@ KINDS = {
 
 class RakutenPage(PageBase):
     def _move_to_target_page(self) -> None:
-        # ログイン
+        # ログイン + 多要素認証入力
         self.driver.get(os.environ["RAK_URL"])
         self.driver.find_element(By.ID, "form-login-id").send_keys(self._credential.username)
         self.driver.find_element(By.ID, "form-login-pass").send_keys(self._credential.password)

@@ -16,7 +16,7 @@ class PageBase(metaclass=ABCMeta):
         options.add_argument("disable-popup-blocking")
         options.add_argument("--incognito")
         self.driver = webdriver.Remote(command_executor="http://selenium_chrome:4444/wd/hub", options=options)
-        self.driver.implicitly_wait(5)
+        self.driver.implicitly_wait(60)
 
     def scrape(self, targets: list[DivunitTarget]) -> list[Divunit]:
         try:

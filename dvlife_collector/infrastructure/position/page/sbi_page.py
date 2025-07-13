@@ -13,17 +13,21 @@ from selenium.webdriver.common.by import By
 
 log = getLogger(__name__)
 
+
 ACC_TYPE_TK = "TOKUTEI"
 ACC_TYPE_IP = "IPPAN"
 
 
 class SbiPage(PageBase):
     def _move_to_target_page(self) -> None:
-        # ログイン
+        # ログイン + デバイス認証
         self.driver.get(os.environ["SBI_URL"])
         self.driver.find_element(By.NAME, "user_id").send_keys(self._credential.username)
         self.driver.find_element(By.NAME, "user_password").send_keys(self._credential.password)
         self.driver.find_element(By.NAME, "ACT_login").click()
+
+        # ログイン後のロゴ表示 = ログイン完了扱い
+        self.driver.find_element(By.XPATH, "/html/body/header/nav/section/div[1]/a/i")
 
         # 口座（円建）
         self._target_tags_ja = self._move_to_ja_account()
@@ -33,10 +37,9 @@ class SbiPage(PageBase):
 
     def _move_to_ja_account(self) -> dict[str, ResultSet]:
         # ヘッダー > 口座管理
-        self.driver.find_element(By.XPATH, '//*[@id="link02M"]/ul/li[3]/a').click()
-        time.sleep(1)
+        self.driver.find_element(By.XPATH, "/html/body/header/nav/section/div[2]/div[1]/div[2]/ul/li[3]/div[1]/a/i").click()
+        time.sleep(3)
 
-        # html parse
         html = self.driver.page_source.encode("utf-8")
         soup = BeautifulSoup(html, "html.parser")
 
@@ -48,13 +51,10 @@ class SbiPage(PageBase):
         return trs
 
     def _move_to_us_account(self) -> dict[str, ResultSet]:
-        # ヘッダー > 口座管理
-        self.driver.find_element(By.XPATH, '//*[@id="link02M"]/ul/li[3]/a').click()
-        time.sleep(1)
-        self.driver.find_element(By.XPATH, '//*[@id="navi02P"]/ul/li[2]/div/a').click()
-        time.sleep(1)
+        # ナビゲーション > 口座(外貨建)
+        self.driver.find_element(By.XPATH, '//*[@id="account-local-nav"]/li[2]/a').click()
+        time.sleep(3)
 
-        # html parse
         html = self.driver.page_source.encode("utf-8")
         soup = BeautifulSoup(html, "html.parser")
 
