@@ -31,13 +31,14 @@ class DivunitRepository:
         jp_etf_page = JpEtfPage(cred)
         divunits.extend(jp_etf_page.scrape(targets_by_site[SiteKind.JP_ETF]))
 
-        # US_NORMAL
-        us_normal_page = UsNormalPage(None)
-        divunits.extend(us_normal_page.scrape(targets_by_site[SiteKind.US_NORMAL]))
+        # TODO https://github.com/tefuna/dvlife-collector/issues/37
+        # # US_NORMAL
+        # us_normal_page = UsNormalPage(None)
+        # divunits.extend(us_normal_page.scrape(targets_by_site[SiteKind.US_NORMAL]))
 
-        # US_ETF
-        us_etf_page = UsEtfPage(None)
-        divunits.extend(us_etf_page.scrape(targets_by_site[SiteKind.US_ETF]))
+        # # US_ETF
+        # us_etf_page = UsEtfPage(None)
+        # divunits.extend(us_etf_page.scrape(targets_by_site[SiteKind.US_ETF]))
 
         return divunits
 
